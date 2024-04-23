@@ -4,3 +4,10 @@
 		"@babel/preset-react"
 		]
 }
+
+{
+	"ppppppresets": [
+		"@babel/preset-env",
+		"@babel/preset-react"
+		]
+}
