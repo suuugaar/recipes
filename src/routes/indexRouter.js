@@ -9,6 +9,7 @@ const Recipes = require('../views/Recipes');
 const CurrentRecipe = require('../views/CurrentRecipe');
 const Register = require('../views/Register');
 const Login = require('../views/Login');
+const { User, Recipe } = require('../../db/models');
 
 // Подключение мидлварок
 const { secureRoute, checkUser } = require('../middlewares/common');
@@ -24,9 +25,23 @@ module.exports = router.get('/', (req, res) => {
   renderTemplate(Main, { login }, res);
 });
 
-module.exports = router.get('/recipes', (req, res) => {
+
+
+module.exports = router.get('/recipes', async (req, res) => {
+  const id = reg.session.userId;
   const { login } = req.session;
-  renderTemplate(Recipes, { login }, res);
+  try {
+    const user = await User.findByPk(id, {
+      include: {
+        model: Recipe,
+      },
+    });
+  const userData = user.get({ plain: true });
+  const recipes = userData.Recipes
+  renderTemplate(Recipes, {login, recipes}, res);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
 module.exports = router.get('/register', (req, res) => {
