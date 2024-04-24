@@ -5,10 +5,6 @@ const renderTemplate = require('../utils/renderTemplate');
 
 // Подключение страниц
 const Main = require('../views/Main');
-const Recipes = require('../views/Recipes');
-const CurrentRecipe = require('../views/CurrentRecipe');
-const Register = require('../views/Register');
-const Login = require('../views/Login');
 const { User, Recipe } = require('../../db/models');
 
 // Подключение мидлварок
@@ -20,13 +16,13 @@ module.exports = router.use('/login', secureRoute);
 module.exports = router.use('/recipes', checkUser);
 
 // Отрисовка страниц
+
 module.exports = router.get('/', (req, res) => {
   const { login } = req.session;
   renderTemplate(Main, { login }, res);
 });
 
-
-
+// Отрисовка страницы Избранное
 module.exports = router.get('/recipes', async (req, res) => {
   const id = reg.session.userId;
   const { login } = req.session;
@@ -36,22 +32,25 @@ module.exports = router.get('/recipes', async (req, res) => {
         model: Recipe,
       },
     });
-  const userData = user.get({ plain: true });
-  const recipes = userData.Recipes
-  renderTemplate(Recipes, {login, recipes}, res);
+    const userData = user.get({ plain: true });
+    const recipes = userData.Recipes;
+    renderTemplate(Recipes, { login, recipes }, res);
   } catch (error) {
     console.error(error);
   }
 });
 
-module.exports = router.get('/register', (req, res) => {
-  renderTemplate(Register, {}, res);
-});
+// Отрисовка страницы Регистрации
+// module.exports = router.get('/register', (req, res) => {
+//   renderTemplate(Register, {}, res);
+// });
 
-module.exports = router.get('/login', (req, res) => {
-  renderTemplate(Login, {}, res);
-});
+// Отрисовка страницы Авторизации
+// module.exports = router.get('/login', (req, res) => {
+//   renderTemplate(Login, {}, res);
+// });
 
+// Выход
 module.exports = router.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('cookieName');
@@ -59,10 +58,11 @@ module.exports = router.get('/logout', (req, res) => {
   });
 });
 
-module.exports = router.get('/:id', (req, res) => {
-  // const {id} = req.params;
-  // const specialRecept = await Recept.findOne({where: {id}})
+// Отрисовка конкретного рецепта
+// module.exports = router.get('/:id', (req, res) => {
+//   // const {id} = req.params;
+//   // const specialRecept = await Recept.findOne({where: {id}})
 
-  const { login } = req.session;
-  renderTemplate(CurrentRecipe, { login }, res);
-});
+//   const { login } = req.session;
+//   renderTemplate(CurrentRecipe, { login }, res);
+// });
