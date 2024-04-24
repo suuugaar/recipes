@@ -10,6 +10,7 @@ const { User, Recipe } = require('../../db/models');
 const Main = require('../views/Main');
 const Register = require('../views/Register');
 const Login = require('../views/Login');
+const Recipes = require('../views/Recipes');
 
 // Подключение мидлварок
 const { secureRoute, checkUser } = require('../middlewares/common');
@@ -20,13 +21,13 @@ module.exports = router.use('/login', secureRoute);
 module.exports = router.use('/recipes', checkUser);
 
 // Отрисовка страниц
-
+// Главная
 module.exports = router.get('/', (req, res) => {
   const { login } = req.session;
   renderTemplate(Main, { login }, res);
 });
 
-// Отрисовка страницы Избранное
+// Избранное
 module.exports = router.get('/recipes', async (req, res) => {
   const id = req.session.userId;
   const { login } = req.session;
@@ -44,12 +45,12 @@ module.exports = router.get('/recipes', async (req, res) => {
   }
 });
 
-// Отрисовка страницы Регистрации
+// Регистрация
 module.exports = router.get('/register', (req, res) => {
   renderTemplate(Register, {}, res);
 });
 
-// Отрисовка страницы Авторизации
+// Авторизация
 module.exports = router.get('/login', (req, res) => {
   renderTemplate(Login, {}, res);
 });

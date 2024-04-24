@@ -5,14 +5,10 @@ const loginRouter = require('./loginRouter');
 module.exports = router.use('/register', registerRouter);
 module.exports = router.use('/login', loginRouter);
 
-const express = require('express');
+const APP_ID = 'your-app-id'; // Замените на ваш App ID
+const APP_KEY = 'your-app-key'; // Замените на ваш App Key
 
-const router = express.Router();
-
-const APP_ID = 'your-app-id';  // Замените на ваш App ID
-const APP_KEY = 'your-app-key';  // Замените на ваш App Key
-
-router.get('/recipes', async (req, res) => {
+router.get('/', async (req, res) => {
   const { time, query } = req.query;
 
   if (!query) {

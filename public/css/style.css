@@ -77,6 +77,11 @@ button:hover {
 }
 
 /*! MAIN */
+.mainContainer{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+}
 
 /*! Регистрация и Авторизация */
 .form-title {

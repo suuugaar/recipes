@@ -11,6 +11,7 @@ function Main({ login }) {
       <form>
         <div className='main-container'></div>
       </form>
+      <script defer src='js/main.js'></script>
     </Layout>
   );
 }
