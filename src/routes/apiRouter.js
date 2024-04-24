@@ -1,14 +1,20 @@
+// Создание роутера
 const router = require('express').Router();
+
+// Подключение ручек
 const registerRouter = require('./registerRouter');
 const loginRouter = require('./loginRouter');
 
+// Включение работы ручек
+// Ручка регистрации
 module.exports = router.use('/register', registerRouter);
+
+// Ручка авторизации
 module.exports = router.use('/login', loginRouter);
 
 const APP_ID = 'your-app-id'; // Замените на ваш App ID
 const APP_KEY = 'your-app-key'; // Замените на ваш App Key
-
-router.get('/', async (req, res) => {
+module.exports = router.get('/', async (req, res) => {
   const { time, query } = req.query;
 
   if (!query) {
@@ -27,4 +33,20 @@ router.get('/', async (req, res) => {
   }
 });
 
-module.exports = router;
+// Ручка добавления в избранное
+router.get('/:id', async (req, res) => {
+  try {
+    const { id } = req.params;
+    const {
+      name, date, time, location,
+    } = req.body;
+
+    const newRecipe = await Party.create({
+      name, date, time, location, owner: req.session.login,
+    });
+    res.json(newParty);
+  } catch (err) {
+    console.log('Ошибка:', err);
+    res.status(500).send('Ошибка создания новой вечеринки');
+  }
+});

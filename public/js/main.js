@@ -54,14 +54,6 @@ document.addEventListener('DOMContentLoaded', async () => {
         ingredientsCount.innerText = `Количество ингридиентов: ${recipe.ingredients.length} шт`;
         recipeDiv.appendChild(ingredientsCount);
 
-        const ingredientsList = document.createElement('ul');
-        for (const ingredient of recipe.ingredients) {
-          const item = document.createElement('li');
-          item.innerText = await translateText(ingredient.text);
-          ingredientsList.appendChild(item);
-        }
-        recipeDiv.appendChild(ingredientsList);
-
         container.appendChild(recipeDiv);
       }
     } catch (error) {
