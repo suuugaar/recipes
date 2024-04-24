@@ -10,8 +10,6 @@ const CurrentRecipe = require('../views/CurrentRecipe');
 const Register = require('../views/Register');
 const Login = require('../views/Login');
 
-
-
 // Подключение мидлварок
 const { secureRoute, checkUser } = require('../middlewares/common');
 
@@ -47,9 +45,9 @@ module.exports = router.get('/logout', (req, res) => {
 });
 
 module.exports = router.get('/:id', (req, res) => {
-  const {id} = req.params;
-  const specialRecept = await Recept.findOne({where: {id}})
-  
+  // const {id} = req.params;
+  // const specialRecept = await Recept.findOne({where: {id}})
+
   const { login } = req.session;
   renderTemplate(CurrentRecipe, { login }, res);
 });

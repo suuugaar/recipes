@@ -1,19 +1,23 @@
 // Добавление библитек и модулей
-const express = require('express')
+const express = require('express');
 require('@babel/register');
 const React = require('react');
 const ReactDOMServer = require('react-dom/server');
-const morgan = require('morgan')
-require('dotenv').config(); 
+const morgan = require('morgan');
+require('dotenv').config();
 const path = require('path');
-const session = require('express-session')
-const FileStore = require('session-file-store')(session)
+const session = require('express-session');
+const FileStore = require('session-file-store')(session);
+
+// Подключение ручек
+const indexRouter = require('./routes/indexRouter');
+const apiRouter = require('./routes/apiRouter');
 
 // Создание сервера
-const app = express()
+const app = express();
 
 // Создание порта
-const { PORT } = process.env
+const { PORT } = process.env;
 
 // Конфиг для куки
 const sessionConfig = {
@@ -33,7 +37,7 @@ app.use(morgan('dev'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(express.static(path.join(process.cwd(), 'public')));
-app.use(session(sessionConfig))
+app.use(session(sessionConfig));
 
 // Включение работы ручек
 app.use('/', indexRouter);
@@ -41,5 +45,5 @@ app.use('/api', apiRouter);
 
 // Запуск сервера
 app.listen(PORT, () => {
-  console.log(`Сервер успешно запущен на порту: ${PORT}`)
-})
+  console.log(`Сервер успешно запущен на порту: ${PORT}`);
+});
