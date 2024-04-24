@@ -3,9 +3,13 @@ const router = require('express').Router();
 // Подключение утилиты для рендера страниц
 const renderTemplate = require('../utils/renderTemplate');
 
+// Подключение модели из БД
+const { User, Recipe } = require('../../db/models');
+
 // Подключение страниц
 const Main = require('../views/Main');
-const { User, Recipe } = require('../../db/models');
+const Register = require('../views/Register');
+const Login = require('../views/Login');
 
 // Подключение мидлварок
 const { secureRoute, checkUser } = require('../middlewares/common');
@@ -24,7 +28,7 @@ module.exports = router.get('/', (req, res) => {
 
 // Отрисовка страницы Избранное
 module.exports = router.get('/recipes', async (req, res) => {
-  const id = reg.session.userId;
+  const id = req.session.userId;
   const { login } = req.session;
   try {
     const user = await User.findByPk(id, {
@@ -41,14 +45,14 @@ module.exports = router.get('/recipes', async (req, res) => {
 });
 
 // Отрисовка страницы Регистрации
-// module.exports = router.get('/register', (req, res) => {
-//   renderTemplate(Register, {}, res);
-// });
+module.exports = router.get('/register', (req, res) => {
+  renderTemplate(Register, {}, res);
+});
 
 // Отрисовка страницы Авторизации
-// module.exports = router.get('/login', (req, res) => {
-//   renderTemplate(Login, {}, res);
-// });
+module.exports = router.get('/login', (req, res) => {
+  renderTemplate(Login, {}, res);
+});
 
 // Выход
 module.exports = router.get('/logout', (req, res) => {
