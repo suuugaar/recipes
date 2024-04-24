@@ -11,6 +11,7 @@ const FileStore = require('session-file-store')(session);
 
 // Подключение ручек
 const indexRouter = require('./routes/indexRouter');
+const apiRouter = require('./routes/apiRouter');
 
 // Создание сервера
 const app = express();
@@ -40,7 +41,7 @@ app.use(session(sessionConfig));
 
 // Включение работы ручек
 app.use('/', indexRouter);
-
+app.use('/api', apiRouter);
 
 // Запуск сервера
 app.listen(PORT, () => {

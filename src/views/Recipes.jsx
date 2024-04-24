@@ -6,19 +6,18 @@ module.exports = function Recipes({ login, recipes }) {
     <Layout login={login}>
           <h1>Избранные рецепты</h1>
           <br /><br />
-          <form name='sort'>
-          <select multiple>
-            <option value='apple'>По возрастанию</option>
-            <option value='banana'>По убы</option>
-            <option value='orange'>Апельсин</option>
+          <form className='sort'>
+          <select size='1' className='argument'>
+            <option value='ingredients'>количество ингридиентов</option>
+            <option value='time'>время приготовления</option>
           </select>
-          <select multiple>
-            <option value='apple'>Яблоко</option>
-            <option value='banana'>Банан</option>
-            <option value='orange'>Апельсин</option>
+          <select size='1' name='way' className='way'>
+            <option value='ascending'>по возрастанию</option>
+            <option value='descending'>по убыванию</option>
           </select>
           <button type='submit'>Сортировать</button>
           </form>
+
           <div className="recipesList">
             {recipes.map((recipe) => (
               <div className="party" key={recipe.id}>
@@ -32,7 +31,7 @@ module.exports = function Recipes({ login, recipes }) {
               </div>
             ))}
           </div>
-      {/* <script defer src="/js/party.js" /> */}
+      <script defer src="/js/recipes.js" />
     </Layout>
   );
 };

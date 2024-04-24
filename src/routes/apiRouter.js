@@ -1,9 +1,11 @@
 const router = require('express').Router();
 const registerRouter = require('./registerRouter');
 const loginRouter = require('./loginRouter');
+const recipesPouter = require('./recipesPouter');
 
 module.exports = router.use('/register', registerRouter);
 module.exports = router.use('/login', loginRouter);
+module.exports = router.use('/recipes', recipesPouter);
 
 const APP_ID = 'your-app-id'; // Замените на ваш App ID
 const APP_KEY = 'your-app-key'; // Замените на ваш App Key

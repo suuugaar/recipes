@@ -39,6 +39,11 @@ module.exports = router.get('/recipes', async (req, res) => {
     });
     const userData = user.get({ plain: true });
     const recipes = userData.Recipes;
+    // const recipes = [{
+    //   id: 1, name: 'Ананас', photo: 'photo', ingridientsCount: 5, time: 10,
+    // }, {
+    //   id: 2, name: 'Арбуз', photo: 'photo', ingridientsCount: 10, time: 15,
+    // }];
     renderTemplate(Recipes, { login, recipes }, res);
   } catch (error) {
     console.error(error);
