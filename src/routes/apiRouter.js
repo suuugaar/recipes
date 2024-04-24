@@ -4,15 +4,15 @@ const router = require('express').Router();
 // Подключение ручек
 const registerRouter = require('./registerRouter');
 const loginRouter = require('./loginRouter');
-const recipesPouter = require('./recipesPouter');
+const recipesRouter = require('./recipesRouter');
 
 // Включение работы ручек
 // Ручка регистрации
 module.exports = router.use('/register', registerRouter);
-
 // Ручка авторизации
 module.exports = router.use('/login', loginRouter);
-module.exports = router.use('/recipes', recipesPouter);
+// Ручка избранного
+module.exports = router.use('/recipes', recipesRouter);
 
 const APP_ID = 'your-app-id'; // Замените на ваш App ID
 const APP_KEY = 'your-app-key'; // Замените на ваш App Key
