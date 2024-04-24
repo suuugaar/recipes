@@ -8,7 +8,9 @@ function Main({ login }) {
         <h2 className="main-title">Все рецепты:</h2>
         <div className="mainContainer" />
       </div>
-      <script defer src="js/main.js" />
+      <form>
+        <div className='main-container'></div>
+      </form>
     </Layout>
   );
 }
