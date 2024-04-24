@@ -13,6 +13,7 @@ logRouter.post('/', async (req, res) => {
       const checkPass = await bcrypt.compare(password, user.password);
       if (checkPass) {
         req.session.login = user.login;
+        req.session.userId = user.id;
         req.session.save(() => {
           console.log('Пароль правильный');
           res.status(200).json({ regDone: true });
