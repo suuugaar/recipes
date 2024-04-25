@@ -22,8 +22,8 @@ sort.addEventListener('submit', async (event) => {
         <img src=${recipe.photo} alt=${recipe.name}></img>
         <div>${recipe.name}</div>
         <div className='smallConteiner'>
-          <div>${recipe.ingridientsCount}</div>
-          <div>${recipe.time}</div>
+          <div>Количество ингридиентов: ${recipe.ingridientsCount} шт.</div>
+          <div>Время на приготовление: ${recipe.time} минут</div>
         </div>
         `)).join('\n');
     recipesList.innerHTML = recipesHTML;
