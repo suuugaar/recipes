@@ -3,53 +3,95 @@ const router = require('express').Router();
 // Подключение утилиты для рендера страниц
 const renderTemplate = require('../utils/renderTemplate');
 
+// Подключение модели из БД
+const { User, Recipe } = require('../../db/models');
+
 // Подключение страниц
-const Main = require('../views/Main');
-const Recipes = require('../views/Recipes');
-const CurrentRecipe = require('../views/CurrentRecipe');
+const Home = require('../views/Home');
 const Register = require('../views/Register');
 const Login = require('../views/Login');
-
-
+const Recipes = require('../views/Favorites');
+const DetailRecipe = require('../views/Recipe');
 
 // Подключение мидлварок
 const { secureRoute, checkUser } = require('../middlewares/common');
 
 // Работа мидлварок
-module.exports = router.use('/register', secureRoute);
-module.exports = router.use('/login', secureRoute);
-module.exports = router.use('/recipes', checkUser);
+router.use('/register', secureRoute);
+router.use('/login', secureRoute);
+router.use('/recipes', checkUser);
 
 // Отрисовка страниц
-module.exports = router.get('/', (req, res) => {
+// Главная
+router.get('/', (req, res) => {
   const { login } = req.session;
-  renderTemplate(Main, { login }, res);
+  renderTemplate(Home, { login }, res);
 });
 
-module.exports = router.get('/recipes', (req, res) => {
+// Избранное
+router.get('/favorites', async (req, res) => {
+  const id = req.session.userId;
   const { login } = req.session;
-  renderTemplate(Recipes, { login }, res);
+  try {
+    const user = await User.findByPk(id, {
+      include: {
+        model: Recipe,
+      },
+    });
+    const userData = user.get({ plain: true });
+    const recipes = userData.Recipes;
+    renderTemplate(Recipes, { login, recipes }, res);
+  } catch (error) {
+    console.error(error);
+  }
 });
 
-module.exports = router.get('/register', (req, res) => {
+// Регистрация
+router.get('/register', (req, res) => {
   renderTemplate(Register, {}, res);
 });
 
-module.exports = router.get('/login', (req, res) => {
+// Авторизация
+router.get('/login', (req, res) => {
   renderTemplate(Login, {}, res);
 });
 
-module.exports = router.get('/logout', (req, res) => {
+// Выход
+router.get('/logout', (req, res) => {
   req.session.destroy(() => {
     res.clearCookie('cookieName');
     res.redirect('/');
   });
 });
 
-module.exports = router.get('/:id', (req, res) => {
-  const {id} = req.params;
-  const specialRecept = await Recept.findOne({where: {id}})
-  
-  const { login } = req.session;
-  renderTemplate(CurrentRecipe, { login }, res);
+// Конкретный рецепт
+router.get('/recipe-details/:id', async (req, res) => {
+  const { id } = req.params; // Получаем ID из параметров маршрута
+
+  try {
+    // Отправляем запрос к API
+    const response = await fetch(
+      `https://api.edamam.com/api/recipes/v2/${id}?type=public&app_id=${process.env.APP_ID}&app_key=${process.env.APP_KEY}`,
+    );
+
+    if (!response.ok) {
+      throw new Error(`HTTP error! Status: ${response.status}`); // Обработка ошибочного ответа от API
+    }
+
+    const { recipe } = await response.json(); // Десериализация JSON ответа и получение рецепта
+
+    if (!recipe) {
+      return res.status(404).send('Recipe not found'); // Обработка ситуации, когда рецепт не найден
+    }
+
+    // Рендеринг страницы с деталями рецепта
+    renderTemplate(DetailRecipe, { recipe }, res);
+  } catch (error) {
+    console.error('Error fetching recipe details:', error);
+    res.status(500).json({
+      error: 'Server error while processing the recipe details request',
+    });
+  }
 });
+
+module.exports = router;
