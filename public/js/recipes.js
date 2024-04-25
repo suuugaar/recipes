@@ -7,7 +7,7 @@ sort.addEventListener('submit', async (event) => {
   try {
     const argument = document.querySelector('.argument').value;
     const way = document.querySelector('.way').value;
-    const response = await fetch('/api/recipes', {
+    const response = await fetch('/api/favorites', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

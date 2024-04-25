@@ -1,34 +1,34 @@
 // Создание ручки
-const router = require('express').Router();
+const router = require("express").Router();
 // Подключение утилиты для рендера страниц
-const renderTemplate = require('../utils/renderTemplate');
+const renderTemplate = require("../utils/renderTemplate");
 
 // Подключение модели из БД
-const { User, Recipe } = require('../../db/models');
+const { User, Recipe } = require("../../db/models");
 
 // Подключение страниц
-const Main = require('../views/Main');
-const Register = require('../views/Register');
-const Login = require('../views/Login');
-const Recipes = require('../views/Recipes');
+const Home = require("../views/Home");
+const Register = require("../views/Register");
+const Login = require("../views/Login");
+const Recipes = require("../views/Favorites");
 
 // Подключение мидлварок
-const { secureRoute, checkUser } = require('../middlewares/common');
+const { secureRoute, checkUser } = require("../middlewares/common");
 
 // Работа мидлварок
-module.exports = router.use('/register', secureRoute);
-module.exports = router.use('/login', secureRoute);
-module.exports = router.use('/recipes', checkUser);
+router.use("/register", secureRoute);
+router.use("/login", secureRoute);
+router.use("/recipes", checkUser);
 
 // Отрисовка страниц
 // Главная
-module.exports = router.get('/', (req, res) => {
+router.get("/", (req, res) => {
   const { login } = req.session;
-  renderTemplate(Main, { login }, res);
+  renderTemplate(Home, { login }, res);
 });
 
 // Избранное
-module.exports = router.get('/recipes', async (req, res) => {
+router.get("/favorites", async (req, res) => {
   const id = req.session.userId;
   const { login } = req.session;
   try {
@@ -51,21 +51,46 @@ module.exports = router.get('/recipes', async (req, res) => {
 });
 
 // Регистрация
-module.exports = router.get('/register', (req, res) => {
+router.get("/register", (req, res) => {
   renderTemplate(Register, {}, res);
 });
 
 // Авторизация
-module.exports = router.get('/login', (req, res) => {
+router.get("/login", (req, res) => {
   renderTemplate(Login, {}, res);
 });
 
 // Выход
-module.exports = router.get('/logout', (req, res) => {
+router.get("/logout", (req, res) => {
   req.session.destroy(() => {
-    res.clearCookie('cookieName');
-    res.redirect('/');
+    res.clearCookie("cookieName");
+    res.redirect("/");
   });
+});
+
+router.get("/", async (req, res) => {
+  const { time, query } = req.query;
+
+  if (!query) {
+    return res
+      .status(400)
+      .json({ error: "Необходимо указать поисковый запрос" });
+  }
+
+  const url = `https://api.edamam.com/search?q=${encodeURIComponent(
+    query
+  )}&time=${time}&app_id=${APP_ID}&app_key=${APP_KEY}`;
+
+  try {
+    const response = await fetch(url);
+    const data = await response.json(); // Парсинг ответа в JSON
+    res.json(data);
+  } catch (error) {
+    console.error("Ошибка при запросе к API Edamam:", error);
+    res
+      .status(500)
+      .json({ error: "Ошибка сервера при обработке запроса к API Edamam" });
+  }
 });
 
 // Отрисовка конкретного рецепта
@@ -76,3 +101,5 @@ module.exports = router.get('/logout', (req, res) => {
 //   const { login } = req.session;
 //   renderTemplate(CurrentRecipe, { login }, res);
 // });
+
+module.exports = router;
