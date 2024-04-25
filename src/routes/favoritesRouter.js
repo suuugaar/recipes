@@ -1,7 +1,7 @@
-const recipesRouter = require('express').Router();
+const favoritesRouter = require('express').Router();
 const { Recipe, User } = require('../../db/models');
 
-module.exports = recipesRouter.post('/', async (req, res) => {
+module.exports = favoritesRouter.post('/', async (req, res) => {
   const id = req.session.userId;
   try {
     const user = await User.findByPk(id, {

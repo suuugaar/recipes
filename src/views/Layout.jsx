@@ -20,7 +20,7 @@ module.exports = function Layout({ children, login }) {
                     <a className="nav-link" href="/">
                       Главная
                     </a>
-                    <a className="nav-link" href="/recipes">
+                    <a className="nav-link" href="/favorites">
                       Избранное
                     </a>
                     <a className="nav-link" href="/logout">
