@@ -17,30 +17,40 @@ module.exports = function Layout({ children, login }) {
               {login ? (
                 <div className="container">
                   <div className="nav">
-                    <a className="nav-link" href="/">
+                    <div class="site-title">CHEFF KITCHEEN</div>
+                    <div class="dropdown">
+                    <a className="dropdown-item" href="/">
                       Главная
                     </a>
-                    <a className="nav-link" href="/favorites">
+                      <div class="dropdown-content">
+                      <a className="dropdown-item" id='check' href="/favorites">
                       Избранное
                     </a>
-                    <a className="nav-link" href="/logout">
+                    <a className="dropdown-item" href="/logout">
                       Выйти
                     </a>
+                      </div>
+                    </div>
                   </div>
                   {children}
                 </div>
               ) : (
                 <div className="container">
                   <div className="nav">
-                    <a className="nav-link" href="/">
+                    <div class="site-title">Книга рецептов</div>
+                    <div class="dropdown">
+                    <a className="dropdown-item" href="/">
                       Главная
                     </a>
-                    <a className="nav-link" href="/login">
-                      Войти
-                    </a>
-                    <a className="nav-link" href="/register">
+                      <div class="dropdown-content">
+                      <a className="dropdown-item" href="/register">
                       Зарегистрироваться
                     </a>
+                    <a className="dropdown-item" href="/login">
+                      Войти
+                    </a>
+                      </div>
+                    </div>
                   </div>
                   {children}
                 </div>

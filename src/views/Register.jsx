@@ -4,6 +4,8 @@ const Layout = require('./Layout');
 function Register() {
   return (
     <Layout>
+      <div className="register-wrapper">
+        <div className="register-content">
       <h2 className="form-title">Создайте аккаунт</h2>
 
       <form
@@ -30,6 +32,8 @@ function Register() {
       </form>
 
       <h3 className="regErrMsg" />
+      </div>
+      </div>
       <script defer src="js/register.js" />
     </Layout>
   );
